@@ -1,0 +1,6 @@
+
+robobserver/simpletest.py
+
+*.log
+
+*.pyc

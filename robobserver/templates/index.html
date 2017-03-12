@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type="text/javascript">
+  $(function() {
+    var handleresponse = function(data) {
+        $('#steering').text(data.s);
+        $('#throttle').text(data.t);
+        $('input[name=s]').focus().select();
+      };
+
+    var resetservo = function(e) {
+      $.getJSON($SCRIPT_ROOT + '/_set_servo', {
+        s: 330,
+        t: 330,
+      }, handleresponse)};
+
+    var setservo = function(e) {
+      $.getJSON($SCRIPT_ROOT + '/_set_servo', {
+        s: $('input[name="s"]').val(),
+        t: $('input[name="t"]').val()
+      }, handleresponse)
+    };
+
+    $('a#setservo').bind('click', setservo);
+    $('a#resetservo').bind('click', resetservo);
+    $('input[type=text]').bind('keydown', function(e) {
+      if (e.keyCode == 13) {
+        submit_form(e);
+      }
+    });
+    $('input[name=a]').focus();
+  });
+</script>
+<h1>Set Servo Values</h1>
+<p>
+  Steering [205 <-> 400] = <input type="text" size="5" name="s"> <br>
+  Throttle [205 <-> 400] = <input type="text" size="5" name="t"> <br>
+  steering set to <span id="steering">?</span> <br>
+  throttle set to <span id="throttle">?</span> <br>
+<p><a href=# id="setservo">Set Servo Values</a>
+<p><a href=# id="resetservo">Reset</a>
+{% endblock %}
